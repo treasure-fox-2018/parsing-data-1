@@ -20,9 +20,16 @@ class PersonParser {
     this._file = file
     this._people = null
   }
+  get file(){
+    return this._file
+  }
 
   get people() {
     return this._people
+  }
+
+  get size(){
+    return this._people.length
   }
 
   addPerson() {
@@ -48,10 +55,12 @@ class PersonParser {
   }
 
   save(){
-    var string = '';
     let people = this.people
+    
+    var string = '';
     string += `id,firstname,lastname,email,phone,createdAt \n`
-    for(let a = 0; a < people.length; a++){
+
+    for(let a = 4; a < people.length; a++){
         for(var key in people[a]){
           string += people[a][key];
           string += ', '
@@ -70,4 +79,4 @@ let parser = new PersonParser('people.csv')
 parser.addPerson()
 console.log(parser.save())
 
-//console.log(`There are ${parser.people.size} people in the file '${parser.file}'.`)
+console.log(`There are ${parser.people.length} people in the file '${parser.file}'.`)
