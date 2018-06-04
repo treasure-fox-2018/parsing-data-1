@@ -9,7 +9,7 @@ class Person {
     this.last_name = last_name
     this.email = email
     this.phone = phone
-    this.created_at = created_at
+    this.created_at = new Date(created_at)
   }
   // Look at the above CSV file
   // What attributes should a Person object have?
@@ -66,18 +66,12 @@ class PersonParser {
   }
 
 
-
-
-
-  // let backtoCSV = 'id,first_name,last_name,email,phone,created_at' + '\n';
-  // fs.writeFileSync(this._file, this._people, 'utf8');
 }
 
 let parser = new PersonParser('people.csv')
-parser.addPerson(3000, 'handi1', 'priyono', 'email@mail.com', '061666')
-parser.addPerson(202, 'MARIO1', 'teguh', 'mario@mail.com', '19881')
-parser.addPerson(300, 'RIO', 'DONI', 'mariodoni@mail.com', '2000')
+parser.addPerson(201, 'handi', 'priyono', 'email@mail.com', '061666')
+parser.addPerson(202, 'MArio', 'Panggih', 'panggih@mail.com', '069899')
+
 // let lihat = parser.people
-console.log(parser.save())
 parser.save()
 console.log(`There are ${parser.people.length} people in the file '${parser._file}'.`)
