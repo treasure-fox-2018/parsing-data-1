@@ -56,6 +56,24 @@ class PersonParser {
     
   }
 
+  save(){
+    const fs = require('fs')
+    var arrPeople = fs.readFileSync(this._file).toString().split('\n')
+
+    var bigArr = []
+    var str = ''
+    for (let i = 0; i < arrPeople.length; i++) {
+      var arr = []
+      for (const x in arrPeople[i]) {
+        arr.push(arrPeople[i][x])
+      }
+      str += arr.join('')
+    }
+    fs.writeFileSync(this.file,str)
+    
+
+  }
+
 
 }
 
@@ -66,4 +84,6 @@ let parser = new PersonParser('people.csv')
 console.log(parser.parsing());
 
 parser.addPeople(new Person(['201','Bimo','yoyo','bimo@yoyo.com','034-23034-34','2014-11-01T06:08:44-07:00']))
+parser.save()
+
 console.log(`There are ${parser.people.length} people in the file '${parser.file}'.`)
