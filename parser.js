@@ -9,7 +9,7 @@ class Person {
     this.last_name = peopleArr[2];
     this.email = peopleArr[3];
     this.phone = peopleArr[4];
-    this.created_at = peopleArr[5];
+    this.created_at = new Date(peopleArr[5]);
   }
 }
 
@@ -64,7 +64,7 @@ class PersonParser {
 
 
 let parser = new PersonParser('people.csv')
-let input = [201,'Maram','Stratos','maramstratos@gmail.com','011899988','2018-06-22T10:09:03-08:00'];
+let input = [201,'Maram','Stratos','maramstratos@gmail.com','011899988','2012-04-21T01:57:17-07:00'];
 let person = new Person(input);
 
 console.log(parser.parse());
