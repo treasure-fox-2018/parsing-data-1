@@ -73,7 +73,6 @@ class PersonParser {
     }
     fs.writeFileSync('people.csv',strJoined)
   }
-
 }
 
 let parser = new PersonParser('people.csv')
