@@ -7,7 +7,7 @@ class Person {
         this.last_name = last_name;
         this.email = email;
         this.phone = phone;
-        this.created_at = created_at;
+        this.created_at = new Date(created_at);
     }
 }
 
@@ -76,9 +76,9 @@ const fs = require('fs');
 let parser = new PersonParser('people.csv');
 
 
-parser.addPerson(new Person(201, 'Muhamad', 'Haddawi', 'muhamadhaddawi@gmail.com', '1-813-7865-8876', '2018'))
+parser.addPerson(new Person(201, 'Muhamad', 'Haddawi', 'muhamadhaddawi@gmail.com', '1-813-7865-8876', '2012-02-22T10:09:03-08:00'))
 
-parser.addPerson(new Person(202, 'Dimitri', 'Doe', 'dimsdoe@gmail.com', '1-813-7293-9755', '2018'))
+parser.addPerson(new Person(202, 'Dimitri', 'Doe', 'dimsdoe@gmail.com', '1-813-7293-9755', '2012-02-22T10:09:03-08:00'))
 
 parser.save();
 
