@@ -41,13 +41,13 @@ class PersonParser {
 
     let arr = []
     let peoples = fs.readFileSync(this._file).toString().split('\n')
-    for (let i = 0; i < peoples.length; i++) {
+    for (let i = 0; i < peoples.length-1; i++) {
 
       arr.push(peoples[i].split(','))
 
     }
 
-    for (let i = 1; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
 
       const id = arr[i][0];
       const first_name = arr[i][1]
@@ -74,18 +74,20 @@ class PersonParser {
 
   save() {
     let str = ''
-    for (let i = 0; i < this.people.length; i++) {
-      str += this.people[i].id + ','
-      str += this.people[i].first_name + ','
-      str += this.people[i].last_name + ','
-      str += this.people[i].email + ','
-      str += this.people[i].phone + ','
-      str += this.people[i].created_at + '\n'
+    for (let i = 0; i < this._people.length; i++) {
+      str += this._people[i].id + ','
+      str += this._people[i].first_name + ','
+      str += this._people[i].last_name + ','
+      str += this._people[i].email + ','
+      str += this._people[i].phone + ','
+      str += this._people[i].created_at + '\n'
       // console.log(this.people)
 
     }
+
+    // console.log(str)
     const fs = require('fs');
-    let write = fs.writeFileSync(this.people, str)
+    let write = fs.writeFileSync(this._file, str)
   }
 
 
