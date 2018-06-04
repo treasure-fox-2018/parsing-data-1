@@ -9,6 +9,7 @@ class Person {
     this.last_name = arrInfo[2]
     this.email = arrInfo[3]
     this.phone = arrInfo[4]
+    this.create_at = arrInfo[5]
   }
 
 }
@@ -22,7 +23,7 @@ class PersonParser {
 
   get people() { 
     
-    return this.parsing()
+    return this._people
   }
   get file() { 
     
@@ -31,31 +32,38 @@ class PersonParser {
 
   parsing() {
     const fs = require('fs')
-    this._people = fs.readFileSync(this._file).toString().split('\n')
+    var arrPeople = fs.readFileSync(this._file).toString().split('\n')
 
-    var arrPeople = []
-    for (let i = 1; i < this._people.length; i++) {
-      this._people[i] = this._people[i].split(',')
-         
+    var AOBpeople = []
+    for (let i = 1; i < arrPeople.length; i++) {
+      arrPeople[i] = arrPeople[i].split(',')
       
-      var objPerson = new Person(this._people[i])
+      var objPerson = new Person(arrPeople[i])
 
-      arrPeople.push(objPerson)
+      AOBpeople.push(objPerson)
 
     }
 
-    this._people = arrPeople
+    this._people = AOBpeople
     return this._people
   }
 
-  addPeople(){}
+  addPeople(obj){
+    
+     this._people.push(obj) 
+    //  console.log(this._people);
+    // console.log(this._people[200]);
+    
+  }
 
 
 }
 
 let parser = new PersonParser('people.csv')
 
-// console.log(parser.addPerson());
 
 
+console.log(parser.parsing());
+
+parser.addPeople(new Person(['201','Bimo','yoyo','bimo@yoyo.com','034-23034-34','2014-11-01T06:08:44-07:00']))
 console.log(`There are ${parser.people.length} people in the file '${parser.file}'.`)
