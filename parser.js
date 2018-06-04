@@ -9,7 +9,6 @@ class Person {
         this.phone = phone;
         this.created_at = created_at;
     }
-
 }
 
 class PersonParser {
@@ -20,9 +19,9 @@ class PersonParser {
 
     parsePeople() {
         var arrayPersonData = [];
-        var rows = fs.readFileSync(this._filename, 'utf8').split("\n")
+        var rows = fs.readFileSync(this._filename, 'utf8').split("\n");
 
-        for (let i = 1; i < rows.length; i++) {
+        for (let i = 0; i < rows.length-1; i++) {
             let personAttr = rows[i].split(",");
 
             let personId = personAttr[0];
@@ -36,13 +35,15 @@ class PersonParser {
 
             arrayPersonData.push(personData);
         }
-
         return arrayPersonData;
     }
 
     // getter attribute this._people
     get people() {
-      return this._people;
+      return {
+          people: this._people,
+          size: this._people.length-1
+      }
     }
 
     // getter attribute this._filename
@@ -50,13 +51,35 @@ class PersonParser {
         return this._filename;
     }
 
-    addPerson() {}
+    addPerson(parseInput) {
+        this._people.push(parseInput);
+    }
+
+    save() {
+        let stringToFile = '';
+        for (let i = 0; i < this._people.length; i++) {
+            let arrPeople = [];
+
+            for (let keys in this._people[i]) {
+                arrPeople.push(this._people[i][keys]);
+            }
+
+            stringToFile = stringToFile + arrPeople.join(',') + '\n';
+        }
+
+        fs.writeFileSync('people.csv', stringToFile);
+    }
 }
 
 const fs = require('fs');
 
 let parser = new PersonParser('people.csv');
 
-console.log(parser.parsePeople());
 
-console.log(`There are ${parser.people.length} people in the file '${parser.file}'.`)
+parser.addPerson(new Person(201, 'Muhamad', 'Haddawi', 'muhamadhaddawi@gmail.com', '1-813-7865-8876', '2018'))
+
+parser.addPerson(new Person(202, 'Dimitri', 'Doe', 'dimsdoe@gmail.com', '1-813-7293-9755', '2018'))
+
+parser.save();
+
+console.log(`There are ${parser.people.size} people in the file '${parser.file}'.`)
