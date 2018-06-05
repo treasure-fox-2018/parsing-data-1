@@ -1,9 +1,11 @@
 "use strict"
+const fs = require("fs")
 
+// buat format yang diinginkan berdasarkan isi data csv 
 class Person {
   // Look at the above CSV file
   // What attributes should a Person object have?
-  constructor(id, first_name, last_name, email, phone, created_at) {
+  constructor([id, first_name, last_name, email, phone, created_at]) {
     this.id = id,
     this.first_name = first_name,
     this.last_name = last_name,
@@ -12,56 +14,53 @@ class Person {
     this.created_at = created_at
   }
 }
-
+// mengolah data csv: membaca file dengan FileSystem readFileSync, menulis file dengan FileSystem writeFileSync 
 class PersonParser {
   constructor(file) {
     this._file = file
     this._people = []
   }
-  
+  // agar private property bisa diakses dr luar class
   get people() {
-    return this.parse()
+    return this._people
   }
-
+  // membaca file csv
   parse () {
-    let fs = require("fs")
-    let filename = './people,csv'
-    let data = fs.readFileSync('./people.csv')
+    let data = fs.readFileSync(this._file)
     data = data.toString().split('\n')
     
     let dataArr = []
+    
     for (let i = 0; i < data.length; i++) {
       dataArr.push(data[i].split(','))
-    }
-    // let parseArr = []
-    for (let i = 1; i < dataArr.length; i++) {
-      this._people.push(new Person(dataArr[i][0], dataArr[i][1], dataArr[i][2], dataArr[i][3], dataArr[i][4], dataArr[i][5]))
+      this._people.push(new Person(dataArr[i]))
     }
     return this._people
   }
   
-  addPerson(newData) {
-    return this._people.push(newData)
+  addPerson(newPersonObj) {
+    return this._people.push(newPersonObj)
   }
 
-  savePerson() {
-    let fs = require("fs")
-    let filename = './people,csv'
-    let data = fs.writeFileSync('./people.csv')
+  save() {
     let mainStr = ''
-    for (let i = 0; i < this.parse().length; i++) {
-      mainStr += `id:${this.parse()[i].id}|first_name:${this.parse()[i].first_name}|last_name:${this.parse()[i].last_name}|email:${this.parse()[i].email}|phone:${this.parse()[i].phone}created_at:${this.parse()[i].created_at}\n`
+    for (let i = 0; i < this._people.length-1; i++) {
+      mainStr += `${this._people[i].id},${this._people[i].first_name},${this._people[i].last_name},${this._people[i].email},${this._people[i].phone},${this._people[i].created_at}\n`
     }
-    return mainStr
+    fs.writeFile(this._file, mainStr)
   }
   
 }
 
+
+//driver code
 let parser = new PersonParser('people.csv')
-let haka = new Person('201', 'Fadhil', 'HaKa', 'fadhilhanri@gmail.com', '007', '2017-11-01T06:08:44-07:00')
+let haka = new Person(['201', 'Fadhil', 'HaKa', 'fadhilhanri@gmail.com', '007', '2017-11-01T06:08:44-07:00'])
 
-// parser.addPerson(haka)
+parser.parse() // olah data
+parser.addPerson(haka) // masukkan data
+parser.save()
 
-console.log(parser.people)
+console.log(parser.save())
 // console.log(parser.savePerson())
 // console.log(`There are ${parser.people.size} people in the file '${parser.file}'.`)
