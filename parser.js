@@ -51,7 +51,15 @@ class PersonParser {
   }
 
   save() {
-    console.log(this._people)
+    let dataPerson = ''
+    for (let i = 0; i < this._people.length;i++) {
+      let arrSave = []
+      for (var key in this._people[i]) {
+        arrSave.push(this._people[i][key])
+      }
+      dataPerson += arrSave.join(',') + '\n'
+    }
+    fs.writeFileSync('people.csv',dataPerson)
   }
 }
 
