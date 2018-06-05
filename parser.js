@@ -1,4 +1,5 @@
 "use strict"
+var fs = require('fs');
 
 class Person {
   constructor (peopleArr) {
@@ -32,28 +33,21 @@ class PersonParser {
   }
 
   parse() {
-    var fs = require('fs');
-    this._people = fs.readFileSync(this._file)
+    var arrPeople = fs.readFileSync(this._file)
       .toString()
       .split("\n")
     
     var peopleArr = [];
-    
-    for (var i = 0; i <= this._people.length - 1; i++) {
-      peopleArr.push(this._people[i].split(','));
-    }
-    this._people = peopleArr
-    // console.log(this._people)
 
-    var arrGabungan = [];
-    for (var i = 1; i <= this._people.length - 1; i++) {
-      var newPerson = new Person(this._people[i]);
-      arrGabungan.push(newPerson)
+    for (var i = 1; i <= arrPeople.length - 1; i++) {
+      var perPerson = new Person (arrPeople[i].split(','));
+      peopleArr.push(perPerson)
     }
 
-    this._people = arrGabungan;
+    this._people = peopleArr;
 
-    // console.log(this._people)
+
+    console.log(this._people)
     return this._people
   }
 
@@ -62,26 +56,17 @@ class PersonParser {
     this._people.push(arr);
   }
 
-  save () {
-    var resultArr = [];
-    for (var i = 0; i <= this._people.length - 1; i++) {
-      var rowResultArr = [];
-      for (var keys in this._people[i]) {
-        rowResultArr.push(this._people[i][keys]);
-      }
-      resultArr.push(rowResultArr)
+  save() {
+    console.log(this._people)
+    var str = 'id,first_name,last_name,email,phone,created_at\n'
+
+    for(var i=0; i<= this._people.length - 1; i++) {
+      var person_str = `${this._people[i].id}, ${this._people[i].firstName}, ${this._people[i].lastName}, ${this._people[i].email}, ${this._people[i].phone}, ${this._people[i].created_at}\n`
+      str = str + person_str
     }
 
-    var finalStr = '';
-    for (var i = 0; i <= resultArr.length - 1; i++) {
-      // for (var j = 0; j <= this._people[i].length - 1; j++) {
-      var rowStr = resultArr[i].join(',');
-      finalStr = finalStr + rowStr + '\n';
-      // }
-    }
-    // console.log(finalStr);
-    var fs = require('fs');
-    fs.writeFileSync(this._file, finalStr);
+    fs.writeFileSync(this._file, str);
+    
   }
 }
 
