@@ -1,4 +1,5 @@
 "use strict"
+let fs = require('fs')
 
 class Person {
   // Look at the above CSV file
@@ -29,10 +30,8 @@ class PersonParser {
   }
 
   convertData() {
-    var fs = require('fs')
     var data = fs.readFileSync('./people.csv', 'utf8') // for read csv file use readFileSync
-    data = data.split('\r\n')
-
+    data = data.split('\n')
     var seperatedArr = []
     for (let i = 1; i < data.length; i++) {
       seperatedArr.push(data[i].split(','))  
@@ -50,30 +49,33 @@ class PersonParser {
   }
 
   save() {
-    // var str = ''
-    // var fs = require('fs')
-    // console.log(this._people)
-    // for (let i = 0; i < this._people.length; i++) {
-    //   var resultArr = []
-    //   for (var key in this._people[i]) {
-    //     resultArr.push(this._people[i][key])
-    //   }
-    //   str = str + resultArr.join(',') + '\n'
-    // }
-    // // return    
-    // fs.writeFileSync('people.csv', str)
+    var str = ''
+    var fs = require('fs')
+    console.log(this._people)
+    for (let i = 0; i < this._people.length; i++) {
+      var resultArr = []
+      for (var key in this._people[i]) {
+        resultArr.push(this._people[i][key])
+      }
+      str = str + resultArr.join(',') + '\n'
+    }
+    // return    
+    fs.writeFileSync('people.csv', str)
     // console.log(str)
-    // // return str
+    // return str
   }
 }
 
-let parser = new PersonParser('people.csv')
+let parser = new PersonParser('people.csv') // mulai dari sini 
+let add = new Person('203', 'fajar', 'tri', 'fajartc02@gmail.com', '0821-2123-2314', '2012-07-15T12:06:16-07:00')
+// parser.addPerson()
+// console.log(parser.convertData());
+parser.convertData();
+parser.addPerson(add);
+parser.save()
 
-parser.addPerson(new Person('203', 'fajar', 'tri', 'fajartc02@gmail.com', '0821-2123-2314', '2012-07-15T12:06:16-07:00'))
-
-console.log(`There are ${parser.people.size} people in the file '${parser.file}'.`)
+console.log(`There are ${parser.people.length} people in the file '${parser._file}'.`)
 // parser.save()
-console.log(parser.convertData());
-console.log(parser.convertData())
-console.log(parser.addPerson())
+// console.log(parser.convertData())
+// console.log(parser.addPerson())
 // console.log(parser.save());
