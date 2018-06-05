@@ -1,4 +1,5 @@
 "use strict"
+const fs = require('fs')
 
 class Person {
   // Look at the above CSV file
@@ -32,28 +33,18 @@ class PersonParser {
   }
 
   parser(){
-    const fs = require('fs')
     let people = fs.readFileSync(this._file, 'utf8')
                    .split("\n")
 
     let peopleData = []
 
     for(let i = 1; i < people.length; i++){
-      let personData = people[i].split(',')
-      let lastIndex = personData.length - 1;
-      personData[lastIndex] = personData[lastIndex].slice(0, -1);
-      peopleData.push(personData)
-    }
-
-    console.log(peopleData);
-
-    for(let i = 1; i < peopleData.length; i++){
+      peopleData[i] = people[i].split(',')
       peopleData[i][peopleData[i].length - 1] = new Date(peopleData[i][peopleData[i].length-1])
       let peopleDataObj = new Person(peopleData[i])
       this._people.push(peopleDataObj)
     }
 
-    console.log(this._people)
   }
 
   addPerson(arr) {
@@ -62,19 +53,22 @@ class PersonParser {
     return this._people
   }
 
-  /*save() {
-    const fs = require("fs");
+ save() {
+    let convert = 'id,first_name,last_name,email,phone,created_at\n'
+ 
+    for(let i = 0; i < this._people.length; i++){
+      convert += `${this._people[i].id}, ${this._people[i].first_name}, ${this._people[i].last_name}, ${this._people[i].email}, ${this._people[i].phone}, ${this._people.created_at}\n`
+    }
     fs.appendFileSync(this._file, this._people + "\n", "utf8");
   }
-  */
-
+  
 
 }
 
 let parser = new PersonParser('people.csv')
 
 parser.parser()
-console.log(parser)
+console.log(parser.people)
 
 console.log(`There are ${parser.people.size} people in the file '${parser.file}'.`)
 
