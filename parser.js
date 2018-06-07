@@ -1,4 +1,5 @@
 "use strict"
+const fs = require ('fs')
 
 class Person {
   // Look at the above CSV file
@@ -20,9 +21,9 @@ class PersonParser {
     this._people = this.callPeople()
   }
 
-  callPeople() {
+  dataPeople() {
     let peopleArr = []
-    var fileName = fs.readFileSync('people.csv').toString().split('\n')
+    var fileName = fs.readFileSync(this._file,'utf8').split('\n')
     //let people_split = []
     for (let i = 0; i < fileName.length; i ++) {
       let fileNameSplit = fileName[i].split(',')
@@ -50,17 +51,21 @@ class PersonParser {
   }
 
   save() {
+    let str = ''
+    for (let i = 0 ; i < this._file.length ; i++ ){
+      
+    }
+    fs.writeFileSync(this._file, 'utf8')
 
-    console.log(this._people);
+    // console.log(this._people);
   }
 }
 
-let fs = require ('fs')
 let parser = new PersonParser('people.csv')
+let riza = new Person('999', 'Cim', 'Ming', 'cimMing@ming.com', '3-999-111-9999', '2018-02-20T06:09.00'))
 
-console.log(parser.people)
-
-//parser.addPerson(new Person('666', 'Tyler', 'Durden', 'durden@hotwheels.com', '1-666-666-6666', '2018-04-01T06:09.00'))
-console.log(parser.people.length)
+parser.dataPeople()
+parser.addPerson(riza)
+// console.log(parser.people.length)
 //console.log(category)
 //console.log(`There are ${parser.people.size} people in the file '${parser.file}'.`)
